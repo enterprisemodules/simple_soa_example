@@ -1,0 +1,18 @@
+profile::base::hosts::list:
+  wlsmaster.example.com:
+    ip: 192.168.253.10
+    host_aliases:
+      - wlsmaster
+      - puppet
+  soa1.example.com:
+    ip: 10.10.10.30
+    host_aliases:
+      - soa1
+  soa2.example.com:
+    ip: 10.10.10.31
+    host_aliases:
+      - soa2
+  rcudb.example.com:
+    ip: 10.10.10.20
+    host_aliases:
+      - rcudb

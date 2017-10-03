@@ -1,0 +1,30 @@
+---
+pe-wlsmaster:
+  public_ip:       '192.168.253.10'
+  cpucount:         2
+  ram:              3072
+  type:             pe-master
+ml-rcudb:
+  public_ip:        '10.10.10.20'
+  cpucount:         2
+  type:             masterless
+ml-soa1:
+  public_ip:        '10.10.10.30'
+  cpucount:         2
+  type:             masterless
+pe-soa1:
+  public_ip:        '10.10.10.30'
+  cpucount:         2
+  type:             pe-agent
+ml-soa2:
+  public_ip:        '10.10.10.31'
+  cpucount:         2
+  type:             masterless
+pe-soa2:
+  public_ip:        '10.10.10.31'
+  cpucount:         2
+  type:             pe-agent
+pe-rcudb:
+  public_ip:        '10.10.10.20'
+  cpucount:         2
+  type:             pe-agent
