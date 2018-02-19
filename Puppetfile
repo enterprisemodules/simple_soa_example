@@ -16,7 +16,7 @@ mod 'bashtoni-timezone',                   '1.0.0'
 # The Enterprise Modules Oracle specific Modules
 #
 mod 'enterprisemodules-wls_config',        '3.0.20'
-mod 'enterprisemodules-wls_install',       '3.0.0'
+mod 'enterprisemodules-wls_install',       '3.0.1'
 mod 'enterprisemodules-easy_type',         '2.3.14'
 mod 'enterprisemodules-ora_config',        '2.3.22'
 mod 'enterprisemodules-ora_install',       '3.0.8'
