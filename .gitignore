@@ -24,3 +24,7 @@ modules/timezone
 /.byebug_history
 /domain_wlsonly.jar
 /domain_my_domain.jar
+/domain_soa.jar
+/modules/augeasproviders
+/modules/augeasproviders_core
+/modules/augeasproviders_sysctl

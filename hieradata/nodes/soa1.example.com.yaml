@@ -2,13 +2,14 @@
 
 role: role::wls::soa_master
 
+logoutput: true
 profile::wls::soa::domain::servers:
-  wls1:
+  soa1:
     machine_name:    soa_machine_1
     listenaddress:   soa1.example.com
     listen_port:     7005
     ssl_listen_port: 7006
-  wls2:
+  soa2:
     machine_name:    soa_machine_2
     listenaddress:   soa2.example.com
     listen_port:     7005
@@ -19,8 +20,10 @@ profile::wls::soa::domain::admin_server_arguments:
   - '-Xms768m'
   - '-Xmx768m'
 
-profile::wls::soa::domain::repository_database_url:   jdbc:oracle:thin:@//rcudb.example.com:1521/rcudb.example.com
-profile::wls::soa::domain::rcu_database_url:          rcudb.example.com:1521:rcudb.example.com
-profile::wls::soa::domain::repository_prefix:         SOA
-profile::wls::soa::domain::repository_password:       welcome01
-profile::wls::soa::domain::repository_sys_password:   welcome01!
+profile::wls::soa::domain::repository_database_url:  'jdbc:oracle:thin:@//rcudb.example.com:1521/RCUDB'
+profile::wls::soa::domain::rcu_database_url:         'rcudb.example.com:1521:RCUDB'
+profile::wls::soa::domain::repository_prefix:         soa7
+profile::wls::soa::domain::repository_password:       'welcome01'
+profile::wls::soa::domain::repository_sys_password:   'welcome01!'
+profile::wls::soa::domain::rcu_soa_profile:           MED
+profile::wls::soa::domain::rcu_honor_omf:             true

@@ -22,11 +22,13 @@ def link_software
     software_locations = []
   end
   software_locations.unshift('./software') # Do local stuff first
+  FileUtils.mkdir_p('./modules/software/files') unless File.exist?('./modules/software/files')
   software_locations.each { |dir| link_sync(dir, './modules/software/files') }
 end
 
 def link_sync(dir, target)
-  Dir.glob("#{dir}/*").each do |file|
+  Dir.glob("#{dir}/*", File::FNM_DOTMATCH).each do |file|
+    next if file =~ /.*\/\.$/ or file =~ /.*\/\.\.$/
     file_name = File.basename(file)
     if File.directory?(file)
       FileUtils.mkdir("#{target}/#{file_name}") unless File.exist?("#{target}/#{file_name}")
@@ -79,10 +81,10 @@ EOF
 EOD
           run_remote  "bash /vagrant/vm-scripts/install_puppet.sh"
           run_remote  "bash /vagrant/vm-scripts/setup_puppet.sh"
-          run_remote  "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true"
+          run_remote  "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp --test; if [ $? -eq 0 -o $? -eq 2 ]; then exit 0; else exit $?; fi"
         end
         config.trigger.after :provision do
-          run_remote  "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp || true"
+          run_remote  "puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp --test; if [ $? -eq 0 -o $? -eq 2 ]; then exit 0; else exit $?; fi"
         end
 
       when 'pe-master'

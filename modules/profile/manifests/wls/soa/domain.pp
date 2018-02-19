@@ -26,7 +26,6 @@ class profile::wls::soa::domain(
   String  $repository_sys_password,
 )
 {
-
   require ::profile::wls
 
   #
@@ -46,15 +45,17 @@ class profile::wls::soa::domain(
   #
   # Some general usage variables
   #
-  $wls_log_dir = "${profile::wls::domains_dir}/${domain_name}/servers/logs"
+  $wls_log_dir       = "${profile::wls::oracle_base_home_dir}/logs/${domain_name}"
   $server_array      = sort(keys($servers))
   $defaults          = {
     domain_name      => $domain_name,
     nodemanager_port => $profile::wls::nodemanager_port,
     server_arguments => [
-      '-XX:PermSize=64m',
-      '-Xms768m',
-      '-Xmx768m',
+      # '-XX:PermSize=64m',
+      # '-Xms768m',
+      # '-Xmx768m',
+    "-Dweblogic.Stdout=${wls_log_dir}/AdminServer.out",
+    "-Dweblogic.Stderr=${wls_log_dir}/AdminServer_err.out",
     ],
     require          => Wls_adminserver['soa/AdminServer'],
     before           => Wls_cluster['soa/SoaCluster'],
@@ -92,7 +93,6 @@ class profile::wls::soa::domain(
     repository_prefix                    => $repository_prefix,
     repository_password                  => 'welcome01',
     repository_sys_password              => $repository_sys_password,
-    log_output                           => false,  # When debugging, set this to true
   } ->
 
   #
@@ -211,7 +211,6 @@ class profile::wls::soa::domain(
     osb_enabled         => $osb_enabled,
     b2b_enabled         => $b2b_enabled,
     ess_enabled         => $ess_enabled,
-    log_output          => false,  # When debugging, set this to true
   } ->
   #
   # This resource definition pack's the current definition of the domain. This packed domain file
@@ -228,7 +227,6 @@ class profile::wls::soa::domain(
     os_user             => $profile::wls::os_user,
     os_group            => $profile::wls::os_group,
     download_dir        => '/data/install',
-    log_output          => false,       # Use true when you are debugging
   } ->
 
   #
@@ -239,6 +237,7 @@ class profile::wls::soa::domain(
     wl_home     => $profile::wls::weblogic_home_dir,
     user        => $profile::wls::os_user,
     domain      => $domain_name,
+    log_dir     => $wls_log_dir,
     domain_path => "${profile::wls::domains_dir}/${domain_name}",
   } ->
 

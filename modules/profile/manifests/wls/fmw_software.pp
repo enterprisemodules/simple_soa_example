@@ -9,8 +9,6 @@ class profile::wls::fmw_software(
     fmw_file1   => $filename,
     fmw_product => 'soa',
     bpm         => true,
-    remote_file => false,
-    source      => '/vagrant/software',
-    log_output  => true,
+    source      => 'puppet:///modules/software',
   }
 }

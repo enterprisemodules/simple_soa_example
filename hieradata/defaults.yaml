@@ -14,10 +14,14 @@ wls_os_group:                                 dba
 wls_version:                                  12212
 wls_weblogic_user:                            weblogic
 wls_download_dir:                             /data/install
+domain_nodemgr_password:                      webl0gic
+domain_nodemgr_username:                      weblogic
+
+
 #
 # Domain settings
 #
-domain_wls_password:                          welcome01
+domain_wls_password:                          webl0gic
 domain_adminserver_address:                   "%{::fqdn}"
 domain_adminserver_port:                      7001
 domain_nodemanager_port:                      5556
@@ -28,7 +32,7 @@ profile::download_dir:                        /data/install
 profile::source_dir:                          /vagrant/modules/software/files
 
 profile::wls::software::fmw_infra:            true
-profile::wls::software::filename:             fmw_12.2.1.0.0_infrastructure.jar
+profile::wls::software::filename:             fmw_12.2.1.2.0_infrastructure.jar
 profile::wls::software::software_source:      "%{lookup('profile::source_dir')}"
 profile::wls::weblogic_home_dir:              "%{lookup('wls_weblogic_home_dir')}"
 #
@@ -42,6 +46,25 @@ profile::java::source_path:                   "%{lookup('profile::source_dir')}"
 profile::wls::soa::domain::domain_name:       soa
 profile::wls::domains_dir:                    "%{lookup('wls_domains_dir')}"
 profile::wls::soa::domain::cluster_name:      soaCluster
+profile::wls::managed_server_defaults:
+  log_file_min_size:            5000
+  log_filecount:                10
+  log_number_of_files_limited:  1
+  log_rotate_logon_startup:     1
+  log_rotationtype:             bySize
+  log_http_format_type:         common
+  log_http_format:              'date time cs-method cs-uri sc-status'
 
-profile::wls::fmw_software::version:          1221
-profile::wls::fmw_software::filename:         V78169-01.zip
+profile::wls::admin_server_defaults:
+  log_file_min_size:            5000
+  log_filecount:                10
+  log_number_of_files_limited:  1
+  log_rotate_logon_startup:     1
+  log_rotationtype:             bySize
+  log_http_format_type:         common
+  log_http_format:              'date time cs-method cs-uri sc-status'
+
+
+profile::wls::fmw_software::version:          12212
+profile::wls::fmw_software::filename:         fmw_12.2.1.2.0_soa.jar.zip
+profile::wls::fmw_software::product:          soa

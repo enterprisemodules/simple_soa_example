@@ -39,34 +39,56 @@ class profile::wls::os {
     ensure  => present,
   }
 
-  class { 'limits':
-    config => {
-               '*'         => {  'nofile'  => { soft => '2048'   , hard => '8192',   },},
-               "${profile::wls::os_user}"  => {  'nofile'  => { soft => '65536'  , hard => '65536',  },
-                               'nproc'   => { soft => '2048'   , hard => '16384',   },
-                               'memlock' => { soft => '1048576', hard => '1048576',},
-                               'stack'   => { soft => '10240'  ,},},
-               },
-    use_hiera => false,
+  $limits_defaults = {
+    ensure  => 'present',
+    user    => "${profile::wls::os_user}",
   }
-  contain ::limits
 
-  sysctl { 'kernel.msgmnb':                 ensure => 'present', permanent => 'yes', value => '65536',}
-  sysctl { 'kernel.msgmax':                 ensure => 'present', permanent => 'yes', value => '65536',}
-  sysctl { 'kernel.shmmax':                 ensure => 'present', permanent => 'yes', value => '2588483584',}
-  sysctl { 'kernel.shmall':                 ensure => 'present', permanent => 'yes', value => '2097152',}
-  sysctl { 'fs.file-max':                   ensure => 'present', permanent => 'yes', value => '6815744',}
-  sysctl { 'net.ipv4.tcp_keepalive_time':   ensure => 'present', permanent => 'yes', value => '1800',}
-  sysctl { 'net.ipv4.tcp_keepalive_intvl':  ensure => 'present', permanent => 'yes', value => '30',}
-  sysctl { 'net.ipv4.tcp_keepalive_probes': ensure => 'present', permanent => 'yes', value => '5',}
-  sysctl { 'net.ipv4.tcp_fin_timeout':      ensure => 'present', permanent => 'yes', value => '30',}
-  sysctl { 'kernel.shmmni':                 ensure => 'present', permanent => 'yes', value => '4096', }
-  sysctl { 'fs.aio-max-nr':                 ensure => 'present', permanent => 'yes', value => '1048576',}
-  sysctl { 'kernel.sem':                    ensure => 'present', permanent => 'yes', value => '250 32000 100 128',}
-  sysctl { 'net.ipv4.ip_local_port_range':  ensure => 'present', permanent => 'yes', value => '9000 65500',}
-  sysctl { 'net.core.rmem_default':         ensure => 'present', permanent => 'yes', value => '262144',}
-  sysctl { 'net.core.rmem_max':             ensure => 'present', permanent => 'yes', value => '4194304', }
-  sysctl { 'net.core.wmem_default':         ensure => 'present', permanent => 'yes', value => '262144',}
-  sysctl { 'net.core.wmem_max':             ensure => 'present', permanent => 'yes', value => '1048576',}
+  $default_limits = {
+    '*_nofile' => {
+      'user'       => '*',
+      'limit_type' => 'nofile',
+      'hard'       => '8192',
+      'soft'       => '2048',
+    },
+    "${profile::wls::os_user}_nofile" => {
+      'limit_type' => 'nofile',
+      'hard'       => '65536',
+      'soft'       => '65536',
+    },
+    "${profile::wls::os_user}_nproc" => {
+      'limit_type' => 'nproc',
+      'hard'       => '16384',
+      'soft'       => '2048',
+    },
+    "${profile::wls::os_user}_stack" => {
+      'limit_type' => 'stack',
+      'soft'       => '10240',
+    },
+  }
+
+  create_resources('limits::limits', $default_limits, $limits_defaults)
+
+  $sysctl = {
+    'kernel.msgmnb' => {ensure => 'present', value => '65536',},
+    'kernel.msgmax' => {ensure => 'present', value => '65536',},
+    'kernel.shmmax' => {ensure => 'present', value => '2588483584',},
+    'kernel.shmall' => {ensure => 'present', value => '2097152',},
+    'fs.file-max' => {ensure => 'present', value => '6815744',},
+    'net.ipv4.tcp_keepalive_time' => {ensure => 'present', value => '1800',},
+    'net.ipv4.tcp_keepalive_intvl' => {ensure => 'present', value => '30',},
+    'net.ipv4.tcp_keepalive_probes' => {ensure => 'present', value => '5',},
+    'net.ipv4.tcp_fin_timeout' => {ensure => 'present', value => '30',},
+    'kernel.shmmni' => {ensure => 'present', value => '4096',},
+    'fs.aio-max-nr' => {ensure => 'present', value => '1048576',},
+    'kernel.sem' => {ensure => 'present', value => '250 32000 100 128',},
+    'net.ipv4.ip_local_port_range' => {ensure => 'present', value => '9000 65500',},
+    'net.core.rmem_default' => {ensure => 'present', value => '262144',},
+    'net.core.rmem_max' => {ensure => 'present', value => '4194304',},
+    'net.core.wmem_default' => {ensure => 'present', value => '262144',},
+    'net.core.wmem_max' => {ensure => 'present', value => '1048576',},
+  }
+
+  create_resources('sysctl', $sysctl)
 
 }
