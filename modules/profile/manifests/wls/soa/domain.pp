@@ -77,7 +77,7 @@ class profile::wls::soa::domain(
     domain_name                          => $domain_name,
     version                              => $profile::wls::version,
     wls_domains_dir                      => $profile::wls::domains_dir,
-    # wls_apps_dir                         => $profile::wls::apps_dir,
+    log_dir                              => $wls_log_dir,
     domain_template                      => 'soa',
     bam_enabled                          => $bam_enabled,
     b2b_enabled                          => $b2b_enabled,
@@ -93,28 +93,28 @@ class profile::wls::soa::domain(
     repository_prefix                    => $repository_prefix,
     repository_password                  => 'welcome01',
     repository_sys_password              => $repository_sys_password,
-  } ->
+  }
 
   #
   # Over here you define the nodemanager. Here you can specify the address
   # the nodemanager is running on and the listen address. When you create multiple domains
   # with multiple nodemanagers, you have to specify different addresses and/or ports.
   #
-  wls_install::nodemanager{"nodemanager for ${domain_name}":
+  ->wls_install::nodemanager{"nodemanager for ${domain_name}":
     domain_name         => $domain_name,
     version             => $profile::wls::version,
     nodemanager_address => $profile::wls::nodemanager_address,
     nodemanager_port    => $profile::wls::nodemanager_port,
     log_dir             => "${wls_log_dir}/nodemanager",
     sleep               => 25,
-  } ->
+  }
 
   #
   # Before you can manage any WebLogic objects, you'll need to have a running admin server.
   # This code makes sure the admin server is started. Just like with the nodemanager, you'll need
   # to specify unique addresses and ports.
   #
-  wls_install::control{"start_adminserver_${domain_name}":
+  ->wls_install::control{"start_adminserver_${domain_name}":
     action              => 'start',
     domain_name         => $domain_name,
     adminserver_address => $profile::wls::adminserver_address,
@@ -123,33 +123,33 @@ class profile::wls::soa::domain(
     weblogic_user       => $profile::wls::weblogic_user,
     weblogic_password   => $profile::wls::weblogic_password,
     os_user             => $profile::wls::os_user,
-  } ->
+  }
 
   #
   # wls_setting is used to store the credentials and connect URL of a domain. The Puppet
   # types need this to connect to the admin server and change settings.
   #
-  wls_setting{'soa':
+  ->wls_setting{'soa':
     user              => $profile::wls::os_user,
     weblogic_user     => $profile::wls::weblogic_user,
     weblogic_password => $profile::wls::weblogic_password,
     connect_url       => "t3://${profile::wls::adminserver_address}:${profile::wls::adminserver_port}",
     weblogic_home_dir => $profile::wls::weblogic_home_dir,
     post_classpath    => "${profile::wls::middleware_home_dir}/oracle_common/modules/oracle.jps_12.1.3/jps-wls-trustprovider.jar:${profile::wls::middleware_home_dir}/oracle_common/modules/internal/features/jrf_wlsFmw_oracle.jrf.wlst_12.1.3.jar",
-  } ->
+  }
 
   #
   # You can use this wls_server definition to change any settings for your
   # Admin server. because the AdminServer is restarted by wls_adminserver{'soa/AdminServer':}
   # These settings are immediately applied
   #
-  wls_server{'soa/AdminServer':
+  ->wls_server{'soa/AdminServer':
     ensure                      => 'present',
     arguments                   => $admin_server_arguments,
     listenaddress               => $profile::wls::adminserver_address,
     listenport                  => $profile::wls::adminserver_port,
     machine                     => 'LocalMachine',
-    logfilename                 => "${wls_log_dir}/AdminServer/AdminServer_${domain_name}.log",
+    logfilename                 => "${wls_log_dir}/AdminServer_${domain_name}.log",
     log_datasource_filename     => "${wls_log_dir}/AdminServer/datasource.log",
     log_http_filename           => "${wls_log_dir}/AdminServer/access.log",
     log_file_min_size           => '2000',
@@ -159,13 +159,13 @@ class profile::wls::soa::domain(
     log_rotationtype            => 'bySize',
     log_http_format_type        => 'common',
     log_http_format             => 'date time cs-method cs-uri sc-status',
-  } ~>
+  }
 
   #
   # This definition restarts the Admin server. It is a refresh-only, so it is only done
   # when the statement before actually changed something.
   #
-  wls_adminserver{'soa/AdminServer':
+  ~>wls_adminserver{'soa/AdminServer':
     ensure              => running,
     refreshonly         => true,
     server_name         => 'AdminServer',
@@ -178,25 +178,25 @@ class profile::wls::soa::domain(
     weblogic_password   => $profile::wls::weblogic_password,
     weblogic_home_dir   => $profile::wls::weblogic_home_dir,
     subscribe           => Wls_install::Domain['soa'],
-  } ->
+  }
 
   #
   # This is the cluster definition. The server array is extracted from the list of servers
   # and machines,
   #
-  wls_cluster{'soa/SoaCluster':
+  ->wls_cluster{'soa/SoaCluster':
     ensure         => 'present',
     messagingmode  => 'unicast',
     migrationbasis => 'consensus',
     servers        => $server_array,
-  } ->
+  }
 
   #
   # This definition changes current servers and cluster setup into a correct
   # Fusion Middleware setup. If you change this, make sure the ..._enabled settings are the
   # same as the one you set when creating the domain.
   #
-  wls_install::utils::fmwcluster{'Soacluster':
+  ->wls_install::utils::fmwcluster{'Soacluster':
     domain_name         => $domain_name,
     repository_prefix   => $repository_prefix,
     soa_cluster_name    => 'SoaCluster',
@@ -211,14 +211,14 @@ class profile::wls::soa::domain(
     osb_enabled         => $osb_enabled,
     b2b_enabled         => $b2b_enabled,
     ess_enabled         => $ess_enabled,
-  } ->
+  }
   #
   # This resource definition pack's the current definition of the domain. This packed domain file
   # can be used by other nodes in the cluster. They fetch it, unpack it and use it to enter the domain.
   # When the node is part of the domain, the packed file loses its value. Any changes in the domain are managed
   # by webLogic.
   #
-  wls_install::packdomain{$domain_name:
+  ->wls_install::packdomain{$domain_name:
     weblogic_home_dir   => $profile::wls::weblogic_home_dir,
     middleware_home_dir => $profile::wls::middleware_home_dir,
     jdk_home_dir        => $profile::wls::jdk_home_dir,
@@ -227,25 +227,25 @@ class profile::wls::soa::domain(
     os_user             => $profile::wls::os_user,
     os_group            => $profile::wls::os_group,
     download_dir        => '/data/install',
-  } ->
+  }
 
   #
   # This class create's a startup script in /etc/init.d.
   #
-  wls_install::support::nodemanagerautostart{'soa_nodemanager':
+  ->wls_install::support::nodemanagerautostart{'soa_nodemanager':
     version     => $profile::wls::version,
     wl_home     => $profile::wls::weblogic_home_dir,
     user        => $profile::wls::os_user,
     domain      => $domain_name,
     log_dir     => $wls_log_dir,
     domain_path => "${profile::wls::domains_dir}/${domain_name}",
-  } ->
+  }
 
   #
   # For now we will put the file in the vagrant directory for sharing. In a real enterprise environment
   # You can use ssh or a shared nfs folder.
   #
-  file{"/vagrant/domain_${domain_name}.jar":
+  ->file{"/vagrant/domain_${domain_name}.jar":
     ensure => present,
     source => "/data/install/domain_${domain_name}.jar",
   }

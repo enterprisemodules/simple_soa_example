@@ -2,7 +2,6 @@
 
 role: role::wls::soa_master
 
-logoutput: true
 profile::wls::soa::domain::servers:
   soa1:
     machine_name:    soa_machine_1
@@ -22,7 +21,7 @@ profile::wls::soa::domain::admin_server_arguments:
 
 profile::wls::soa::domain::repository_database_url:  'jdbc:oracle:thin:@//rcudb.example.com:1521/RCUDB'
 profile::wls::soa::domain::rcu_database_url:         'rcudb.example.com:1521:RCUDB'
-profile::wls::soa::domain::repository_prefix:         soa7
+profile::wls::soa::domain::repository_prefix:         soa10
 profile::wls::soa::domain::repository_password:       'welcome01'
 profile::wls::soa::domain::repository_sys_password:   'welcome01!'
 profile::wls::soa::domain::rcu_soa_profile:           MED

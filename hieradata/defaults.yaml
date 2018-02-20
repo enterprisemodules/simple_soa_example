@@ -11,7 +11,7 @@ wls_jdk_home_dir:                             /usr/java/jdk1.8.0_161
 wls_apps_dir:                                 "%{lookup('wls_oracle_base_home_dir')}/applications"
 wls_os_user:                                  oracle
 wls_os_group:                                 dba
-wls_version:                                  12213
+wls_version:                                  &wls_version 12213
 wls_weblogic_user:                            weblogic
 wls_download_dir:                             /data/install
 domain_nodemgr_password:                      webl0gic
@@ -64,7 +64,7 @@ profile::wls::admin_server_defaults:
   log_http_format_type:         common
   log_http_format:              'date time cs-method cs-uri sc-status'
 
-
-profile::wls::fmw_software::version:          12213
+profile::wls::version:                        *wls_version
+profile::wls::fmw_software::version:          *wls_version
 profile::wls::fmw_software::filename:         fmw_12.2.1.3.0_soa.jar.zip
 profile::wls::fmw_software::product:          soa
