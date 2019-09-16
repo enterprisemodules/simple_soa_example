@@ -1,0 +1,23 @@
+---
+#
+# Include the shared gitlab CI definitions
+#
+include:
+  - project: 'enterprisemodules/gitlab_ci'
+    file: 'gitlab-ci.yml'
+
+
+soa1_demo_check:
+  extends: .demo_check
+  before_script:
+    - mkdir -p modules/software/files
+    - cp ~/software/jdk-8u161-linux-x64.tar.gz modules/software/files
+    - cp ~/software/fmw_12.2.1.3.0_infrastructure.jar modules/software/files
+    - cp ~/software/fmw_12.2.1.3.0_soa.jar.zip modules/software/files
+    - cp ~/software/linuxx64_12201_database.zip modules/software/files
+    - cp ~/software/jce_policy-8.zip modules/software/files
+  script:
+    - vagrant up ml-rcudb && vagrant up ml-soa1
+
+
+

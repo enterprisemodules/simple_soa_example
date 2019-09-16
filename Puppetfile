@@ -1,25 +1,25 @@
 # forge in this file will not be used by r10k, so it is defined in r10k.yaml
-forge 'http://forge.puppetlabs.com
+forge 'http://forge.puppetlabs.com'
 
-mod 'puppet-archive',                      '2.2.0'
-mod 'puppetlabs-stdlib',                   '4.18.0'
-mod 'puppetlabs-concat',                   '1.2.5'
-mod 'saz-limits',                          '2.5.0'
-mod 'herculesteam-augeasproviders',        '2.1.3'
-mod 'herculesteam-augeasproviders_core',   '2.1.4'
+mod 'puppet-archive'
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-concat'
+mod 'saz-limits'
+mod 'herculesteam-augeasproviders'
+mod 'herculesteam-augeasproviders_core'
 mod 'herculesteam-augeasproviders_sysctl', '2.2.0'
-mod 'biemond-jdk7',                        '1.0.0'
-mod 'fiddyspence-sleep',                   '1.2.0'
-mod 'bashtoni-timezone',                   '1.0.0'
+mod 'biemond-jdk7'
+mod 'fiddyspence-sleep'
+mod 'bashtoni-timezone'
 
 #
 # The Enterprise Modules Oracle specific Modules
 #
-mod 'enterprisemodules-wls_config',        '3.0.20'
-mod 'enterprisemodules-wls_install',       '3.0.1'
-mod 'enterprisemodules-easy_type',         '2.3.14'
-mod 'enterprisemodules-ora_config',        '2.3.22'
-mod 'enterprisemodules-ora_install',       '3.0.8'
+mod 'enterprisemodules-wls_config'
+mod 'enterprisemodules-wls_install'
+mod 'enterprisemodules-easy_type'
+mod 'enterprisemodules-ora_config'
+mod 'enterprisemodules-ora_install'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
