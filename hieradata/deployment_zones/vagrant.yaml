@@ -4,15 +4,23 @@ profile::base::hosts::list:
     host_aliases:
       - wlsmaster
       - puppet
-  soa1.example.com:
-    ip: 10.10.10.30
-    host_aliases:
-      - soa1
-  soa2.example.com:
-    ip: 10.10.10.31
-    host_aliases:
-      - soa2
   rcudb.example.com:
     ip: 10.10.10.20
     host_aliases:
       - rcudb
+  soa12213n1.example.com:
+    ip: 10.10.10.30
+    host_aliases:
+      - soa12213n1
+  soa12213n2.example.com:
+    ip: 10.10.10.31
+    host_aliases:
+      - soa12213n2
+  soa12214n1.example.com:
+    ip: 10.10.10.32
+    host_aliases:
+      - soa12214n1
+  soa12214n2.example.com:
+    ip: 10.10.10.33
+    host_aliases:
+      - soa12214n2

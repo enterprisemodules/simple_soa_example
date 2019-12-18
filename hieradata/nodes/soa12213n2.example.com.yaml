@@ -2,4 +2,4 @@
 role: role::wls::server
 
 profile::wls::server::domain_name: my_domain
-domain_adminserver_address:        soa1.example.com
+domain_adminserver_address:        soa12213n1.example.com
