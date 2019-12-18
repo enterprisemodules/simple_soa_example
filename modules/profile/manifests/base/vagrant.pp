@@ -5,7 +5,6 @@ class profile::base::vagrant()
     $required_packages = [
       'bc',
       'mlocate',
-      'psmisc',
       'unzip',
     ]
 

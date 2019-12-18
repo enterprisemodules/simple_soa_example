@@ -3,8 +3,9 @@
 #
 class profile::base::config()
 {
-  class { 'timezone':
-    region   => 'Europe',
-    locality => 'Amsterdam',
+  if $::kernel == 'Linux' {
+    class { 'timezone':
+      timezone => 'Europe/Amsterdam',
+    }
   }
 }

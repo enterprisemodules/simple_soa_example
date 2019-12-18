@@ -2,12 +2,8 @@
 class role::db::rcudb()
 {
   contain ::profile::base
-  contain ::profile::db::os
-  contain ::profile::db::software
-  contain ::profile::db::rcudb
+  contain ::ora_profile::database
 
-  Class['::profile::base::hosts']
-  -> Class['::profile::db::os']
-  -> Class['::profile::db::software']
-  -> Class['::profile::db::rcudb']
+  Class['::profile::base']
+  -> Class['::ora_profile::database']
 }

@@ -174,6 +174,7 @@ def puppet_agent_setup(config, server, srv, hostname)
     @provisioners << { shell: { inline: "bash /vagrant/vm-scripts/install_puppet_agent.sh #{server['puppet_master']}.#{server['domain_name']}" } }
     @provisioners << { shell: { inline: 'systemctl stop puppet; pkill -9 -f "puppet.*agent.*"; true' } }
     @provisioners << { puppet_server: { puppet_server: "#{server['puppet_master']}.#{server['domain_name']}",
+                                        puppet_node: "#{hostname}.#{server['domain_name']}",
                                         options: "--test" } }
     @provisioners << { shell: { inline: 'systemctl start puppet' } }
   else
@@ -187,6 +188,7 @@ def puppet_agent_setup(config, server, srv, hostname)
                                            .\\install.ps1
                                            iex 'puppet resource service puppet ensure=stopped') } }
     @provisioners << { puppet_server: { puppet_server: "#{server['puppet_master']}.#{server['domain_name']}",
+                                        puppet_node: "#{hostname}.#{server['domain_name']}",
                                         options: "--test" } }
   end
 end
@@ -317,18 +319,16 @@ end
 # Check if all required software files from servers.yaml are present in repo.
 def local_software_file_check(config, file_names)
   config.trigger.before [:up, :reload, :provision] do |trigger|
-    trigger.ruby do |env, machine|
-      files_found = true
-      file_names.each do |file_name|
-        file_path = "#{VAGRANT_ROOT}/modules/software/files/#{file_name}"
-        unless File.exist?(file_path) # returns true for directories
-          files_found = false
-          env.ui.error "Missing software file: #{file_name}"
-        end
+    files_found = true
+    file_names.each do |file_name|
+      file_path = "#{VAGRANT_ROOT}/modules/software/files/#{file_name}"
+      unless File.exist?(file_path) # returns true for directories
+        files_found = false
+        puts "Missing software file: #{file_name}"
       end
       if not files_found
-          env.ui.error "Please add missing file(s) to the: ./modules/software/files/ directory."
-          raise FilesNotFoundError
+        puts "Please add missing file(s) to the: ./modules/software/files/ directory."
+        raise FilesNotFoundError
       end
     end
   end
@@ -383,7 +383,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       local_software_file_check(config, [puppet_installer]) if puppet_installer # Check if installer folder is present
       config.trigger.before :up do |trigger|
         trigger.info = "Starting DHCP fix process..."
-        trigger.run = {path: 'vm-scripts/dhcp_fix.sh', args: name}
+        trigger.run = {inline: "sh -c \"until vboxmanage guestcontrol #{name} run \"/usr/bin/sudo\" --username vagrant --password vagrant --verbose --wait-stdout dhclient; do c=$((${c:-1}+1)); test $c -gt 50 && exit; sleep 20; done > /dev/null 2>&1 &\""}
       end
 
       srv.vm.communicator = server['protocol'] || 'ssh'
@@ -439,6 +439,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.cpus = server['cpucount'] || 1
         vb.memory = server['ram'] || 4096
         vb.name = name
+        # Prevent vagrant from setting up dns proxy, and thus changing /etc/resolv.conf
+        vb.auto_nat_dns_proxy = false
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
 
         # Setup config fixes for Oracle product
         virtualboxorafix(vb) if server['virtualboxorafix']

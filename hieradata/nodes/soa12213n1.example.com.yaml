@@ -1,28 +1,26 @@
 ---
 
-role: role::wls::soa_master
+role: role::soa::admin_server
 
-profile::wls::soa::domain::servers:
-  soa12213n1:
-    machine_name:    soa_machine_1
-    listenaddress:   soa12213n1.example.com
-    listen_port:     7005
-    ssl_listen_port: 7006
-  soa12213n2:
-    machine_name:    soa_machine_2
-    listenaddress:   soa12213n2.example.com
-    listen_port:     7005
-    ssl_listen_port: 7006
 
-profile::wls::soa::domain::admin_server_arguments:
-  - '-XX:PermSize=64m'
-  - '-Xms768m'
-  - '-Xmx768m'
+wls_profile::servers:
+  soa12213n1.example.com:
+    machine_name:     soa12213n1.example.com
+    listenaddress:    soa12213n1.example.com
+    server_arguments: []
+  soa12213n2.example.com:
+    machine_name:     soa12213n2.example.com
+    listenaddress:    soa12213n2.example.com
+    server_arguments: []
 
-profile::wls::soa::domain::repository_database_url:  'jdbc:oracle:thin:@//rcudb.example.com:1521/RCUDB'
-profile::wls::soa::domain::rcu_database_url:         'rcudb.example.com:1521:RCUDB'
-profile::wls::soa::domain::repository_prefix:         soa12213
-profile::wls::soa::domain::repository_password:       'welcome01'
-profile::wls::soa::domain::repository_sys_password:   'welcome01!'
-profile::wls::soa::domain::rcu_soa_profile:           MED
-profile::wls::soa::domain::rcu_honor_omf:             true
+wls_profile::basic_domain::wls_domain::repository_prefix:         soa12213
+wls_profile::weblogic_version:                                    12213
+wls_profile::weblogic::wls_software::file_name:                    fmw_12.2.1.3.0_infrastructure.jar
+wls_profile::weblogic::fmw_software::file_name:   
+  - fmw_12.2.1.3.0_soa.jar.zip
+#
+# Use newer JDK version for this machine
+#
+wls_profile::java_version:                                         8u161
+wls_profile::java_full_version:                                    jdk1.8.0_161
+wls_profile::jdk_home:                                             /usr/java/jdk1.8.0_161
