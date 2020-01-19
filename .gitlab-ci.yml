@@ -49,11 +49,9 @@ teardown RCU:
   stage: acceptance teardown
   tags:
     - demo_check
-  before_script:
-    - mkdir -p modules/software/files
-    - cp ~/software/linuxx64_12201_database.zip modules/software/files
   script:
-  - vagrant destroy ml-rcudb --force
+  - vboxmanage controlvm  ml-rcudb poweroff
+  - vboxmanage unregistervm ml-rcudb --delete
   only:
     refs:
       - master
