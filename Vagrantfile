@@ -317,18 +317,20 @@ def plugin_check(plugin_name)
 end
 
 # Check if all required software files from servers.yaml are present in repo.
-def local_software_file_check(config, file_names)
-  config.trigger.before [:up, :reload, :provision] do |trigger|
-    files_found = true
-    file_names.each do |file_name|
-      file_path = "#{VAGRANT_ROOT}/modules/software/files/#{file_name}"
-      unless File.exist?(file_path) # returns true for directories
-        files_found = false
-        puts "Missing software file: #{file_name}"
+def local_software_file_check(srv, file_names)
+  srv.trigger.before [:up, :reload, :provision] do |trigger|
+    trigger.ruby do |env, machine|
+      files_found = true
+      file_names.each do |file_name|
+        file_path = "#{VAGRANT_ROOT}/modules/software/files/#{file_name}"
+        unless File.exist?(file_path) # returns true for directories
+          files_found = false
+          env.ui.error "Missing software file: #{file_name}"
+        end
       end
       if not files_found
-        puts "Please add missing file(s) to the: ./modules/software/files/ directory."
-        raise FilesNotFoundError
+          env.ui.error "Please add missing file(s) to the: ./modules/software/files/ directory."
+          raise FilesNotFoundError
       end
     end
   end
@@ -379,9 +381,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #
       # Perform software checks before main setup
       #
-      local_software_file_check(config, server['software_files']) if server['software_files']
-      local_software_file_check(config, [puppet_installer]) if puppet_installer # Check if installer folder is present
-      config.trigger.before :up do |trigger|
+      local_software_file_check(srv, server['software_files']) if server['software_files']
+      local_software_file_check(srv, [puppet_installer]) if puppet_installer # Check if installer folder is present
+      srv.trigger.before :up do |trigger|
         trigger.info = "Starting DHCP fix process..."
         trigger.run = {inline: "sh -c \"until vboxmanage guestcontrol #{name} run \"/usr/bin/sudo\" --username vagrant --password vagrant --verbose --wait-stdout dhclient; do c=$((${c:-1}+1)); test $c -gt 50 && exit; sleep 20; done > /dev/null 2>&1 &\""}
       end
@@ -434,7 +436,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       end
 
-      config.vm.provider :virtualbox do |vb|
+      srv.vm.provider :virtualbox do |vb|
         # vb.gui = true
         vb.cpus = server['cpucount'] || 1
         vb.memory = server['ram'] || 4096
