@@ -8,3 +8,5 @@ wls_profile::basic_domain::wls_domain::repository_database_url:   'jdbc:oracle:t
 wls_profile::basic_domain::wls_domain::rcu_database_url:          'rcudb.example.com:1521:rcudb_app.domain.local'
 wls_profile::basic_domain::wls_domain::repository_password:       'welcome01'
 wls_profile::basic_domain::wls_domain::repository_sys_password:   'welcome01!'
+
+easy_type::generate_password_mode: development
