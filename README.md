@@ -6,11 +6,17 @@ This repo contains a demonstration of a Oracle Fusion SOA suite installation. It
 
 All nodes are available to test with Puppet masterless. To do so, add `ml-` for the name when using vagrant:
 
+The RCU is required to run before any Fusion middleware applications can be installed. Start it first by:
+```
+$ vagrant up ml-rcudb
+```
+
+The choose version of the SOA suite to provision and start with the first node, the admin server.
 ```
 $ vagrant up ml-soa<version>n1
 ```
 
-and/or
+When succesful, provision the second node, the SOA node.
 
 ```
 $ vagrant up ml-soa<version>n2

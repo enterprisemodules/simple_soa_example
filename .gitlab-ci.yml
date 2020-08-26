@@ -29,8 +29,9 @@ soa_12213_demo_check:
     - cp ~/software/jce_policy-8.zip modules/software/files
   script:
     - vagrant up ml-soa12213n1
+    - vagrant up ml-soa12213n2
   after_script:
-    - vagrant destroy ml-soa12213n1 --force
+    - vagrant destroy ml-soa12213n1 ml-soa12213n2 --force
 
 soa_12214_demo_check:
   extends: .demo_check
@@ -42,8 +43,9 @@ soa_12214_demo_check:
     - cp ~/software/jce_policy-8.zip modules/software/files
   script:
     - vagrant up ml-soa12214n1
+    - vagrant up ml-soa12214n2
   after_script:
-    - vagrant destroy ml-soa12214n1 --force
+    - vagrant destroy ml-soa12214n1 ml-soa12214n2 --force
 
 teardown RCU:
   stage: acceptance teardown

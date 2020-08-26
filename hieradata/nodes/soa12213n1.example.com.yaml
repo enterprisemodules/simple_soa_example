@@ -1,7 +1,16 @@
 ---
-
 role: role::soa::admin_server
 
+wls_profile::weblogic_version:                                    12213
+wls_profile::weblogic::wls_software::file_name:                   fmw_12.2.1.3.0_infrastructure.jar
+wls_profile::weblogic::fmw_software::file_name:   
+  - fmw_12.2.1.3.0_soa.jar.zip
+
+wls_profile::java_version:                                         8u161
+wls_profile::java_full_version:                                    jdk1.8.0_161
+wls_profile::jdk_home:                                             /usr/java/jdk1.8.0_161
+
+wls_profile::basic_domain::wls_domain::repository_prefix:          soa12213
 
 wls_profile::servers:
   soa12213n1.example.com:
@@ -12,15 +21,4 @@ wls_profile::servers:
     machine_name:     soa12213n2.example.com
     listenaddress:    soa12213n2.example.com
     server_arguments: []
-
-wls_profile::basic_domain::wls_domain::repository_prefix:         soa12213
-wls_profile::weblogic_version:                                    12213
-wls_profile::weblogic::wls_software::file_name:                    fmw_12.2.1.3.0_infrastructure.jar
-wls_profile::weblogic::fmw_software::file_name:   
-  - fmw_12.2.1.3.0_soa.jar.zip
-#
-# Use newer JDK version for this machine
-#
-wls_profile::java_version:                                         8u161
-wls_profile::java_full_version:                                    jdk1.8.0_161
-wls_profile::jdk_home:                                             /usr/java/jdk1.8.0_161
+...

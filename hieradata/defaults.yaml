@@ -1,12 +1,22 @@
 ---
-wls_profile::domain_name:   soa
+# Installation type
+wls_profile::domain_name:                                           soa
+wls_profile::install_type:                                          soa
+wls_profile::basic_domain::wls_domain::template_name:               soa
 
-wls_profile::install_type:                                        soa
-wls_profile::basic_domain::wls_domain::template_name:             soa
+# RCU DB settings
+wls_profile::basic_domain::wls_domain::repository_database_url:     'jdbc:oracle:thin:@//rcudb.example.com:1521/rcudb.example.com'
+wls_profile::basic_domain::wls_domain::rcu_database_url:            'rcudb.example.com:1521:rcudb.example.com'
 
-wls_profile::basic_domain::wls_domain::repository_database_url:   'jdbc:oracle:thin:@//rcudb.example.com:1521/rcudb_app.domain.local'
-wls_profile::basic_domain::wls_domain::rcu_database_url:          'rcudb.example.com:1521:rcudb_app.domain.local'
-wls_profile::basic_domain::wls_domain::repository_password:       'welcome01'
-wls_profile::basic_domain::wls_domain::repository_sys_password:   'welcome01!'
+wls_profile::basic_domain::wls_domain::repository_sys_password:     'welcome01!'
+wls_profile::basic_domain::wls_domain::repository_password:         'welcome01'
 
-easy_type::generate_password_mode: development
+easy_type::generate_password_mode:                                  development
+
+#
+# Passwords cannot be random in this dual node setup
+#
+wls_profile::weblogic_password:                                     'EMRul3z#'
+wls_profile::basic_domain::wls_domain::weblogic_password:           'EMRul3z#'
+wls_profile::node::copy_domain::weblogic_password:                  'EMRul3z#'
+...
