@@ -32,3 +32,4 @@ modules/timezone
 /modules/echo
 /modules/firewalld
 /modules/ora_profile
+/modules/java
