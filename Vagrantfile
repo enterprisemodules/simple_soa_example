@@ -72,7 +72,7 @@ end
 # Return a shell command that ensures that all vagrant hosts are in /etc/hosts
 def hosts_file(vms, ostype)
   if ostype == 'linux'
-    commands = 'sed -i -e /127.0.0.1.*/d /etc/hosts;'
+    commands = 'sed -i -e /127.0.*.1.*/d /etc/hosts;'
     vms.each do |k, v|
       hostname =  k[3..-1]
       domain   = v['domain_name']
@@ -383,9 +383,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #
       local_software_file_check(srv, server['software_files']) if server['software_files']
       local_software_file_check(srv, [puppet_installer]) if puppet_installer # Check if installer folder is present
-      srv.trigger.before :up do |trigger|
-        trigger.info = "Starting DHCP fix process..."
-        trigger.run = {inline: "sh -c \"until vboxmanage guestcontrol #{name} run \"/usr/bin/sudo\" --username vagrant --password vagrant --verbose --wait-stdout dhclient; do c=$((${c:-1}+1)); test $c -gt 50 && exit; sleep 20; done > /dev/null 2>&1 &\""}
+      if server['dhcp_fix']
+        srv.trigger.before :up do |trigger|
+          if Gem.win_platform?
+            trigger.info = "DHCP fix process doesn't work on Windows..."
+          else
+            trigger.info = "Starting DHCP fix process..."
+            trigger.run = {inline: "sh -c \"until vboxmanage guestcontrol #{name} run \"/usr/bin/sudo\" --username vagrant --password vagrant --verbose --wait-stdout dhclient; do c=$((${c:-1}+1)); test $c -gt 50 && exit; sleep 20; done > /dev/null 2>&1 &\""}
+          end
+        end
       end
 
       srv.vm.communicator = server['protocol'] || 'ssh'
@@ -428,11 +434,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       begin
         "#{server['type']} is invalid."
       rescue => exception
-        
+
       else
-        
+
       ensure
-        
+
       end
       end
 
