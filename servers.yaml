@@ -23,7 +23,7 @@ pe-defaults:
 # The settings for the Puppet Enterprise Server
 #  
 pe-wlsmaster:
-  public_ip:       '192.168.253.10'
+  public_ip:       '192.168.56.10'
   cpucount:         2
   ram:              3072
   type:             pe-master
@@ -33,12 +33,12 @@ pe-wlsmaster:
 # All masterless nodes
 #
 ml-rcudb:
-  public_ip:        '10.10.10.20'
+  public_ip:        '192.168.56.20'
   software_files:
     - linuxx64_12201_database.zip
 
 ml-soa12213n1:
-  public_ip:        '10.10.10.30'
+  public_ip:        '192.168.56.30'
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
@@ -46,7 +46,7 @@ ml-soa12213n1:
     - jce_policy-8.zip
 
 ml-soa12213n2:
-  public_ip:        '10.10.10.31'
+  public_ip:        '192.168.56.31'
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
@@ -54,7 +54,7 @@ ml-soa12213n2:
     - jce_policy-8.zip
 
 ml-soa12214n1:
-  public_ip:        '10.10.10.32'
+  public_ip:        '192.168.56.32'
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
@@ -62,7 +62,7 @@ ml-soa12214n1:
     - jce_policy-8.zip
 
 ml-soa12214n2:
-  public_ip:        '10.10.10.33'
+  public_ip:        '192.168.56.33'
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
@@ -73,7 +73,7 @@ ml-soa12214n2:
 # All PE nodes
 #
 pe-soa12213n1:
-  public_ip:        '10.10.10.30'
+  public_ip:        '192.168.56.30'
   cpucount:         2
   software_files:
     - jdk-8u161-linux-x64.tar.gz
@@ -82,7 +82,7 @@ pe-soa12213n1:
     - jce_policy-8.zip
 
 ml-soa12213n2:
-  public_ip:        '10.10.10.31'
+  public_ip:        '192.168.56.31'
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
@@ -90,7 +90,7 @@ ml-soa12213n2:
     - jce_policy-8.zip
 
 pe-soa12214n1:
-  public_ip:        '10.10.10.32'
+  public_ip:        '192.168.56.32'
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
@@ -98,7 +98,7 @@ pe-soa12214n1:
     - jce_policy-8.zip
 
 pe-soa12214n2:
-  public_ip:        '10.10.10.33'
+  public_ip:        '192.168.56.33'
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
@@ -106,7 +106,7 @@ pe-soa12214n2:
     - jce_policy-8.zip
 
 pe-rcudb:
-  public_ip:        '10.10.10.20'
+  public_ip:        '192.168.56.20'
   cpucount:         2
   type:             pe-agent
   software_files:
