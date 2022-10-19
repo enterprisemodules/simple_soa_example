@@ -17,9 +17,10 @@ mod 'fiddyspence-sleep'
 mod 'saz-timezone'
 mod 'stm-debconf'
 # mod 'puppet-firewalld'
-mod 'crayfishx-firewalld'
+mod 'puppet-firewalld'
 mod 'puppetlabs-concat'
 mod 'petems-swap_file'
+mod 'puppet-systemd'
 #
 # Modules that are part of the control repo. R10K doesn't need to touch these
 #
