@@ -1,7 +1,7 @@
 ---
 role: role::db::rcudb
 
-ora_profile::database::version:                                         12.2.0.1
+ora_profile::database::version:                                         19.0.0.0
 ora_profile::database::dbname:                                          RCUDB
 ora_profile::database::dbdomain:                                        example.com
 ora_profile::database::db_services::domain_name:                         ~

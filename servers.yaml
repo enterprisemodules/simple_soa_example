@@ -35,7 +35,7 @@ pe-wlsmaster:
 ml-rcudb:
   public_ip:        '192.168.56.20'
   software_files:
-    - linuxx64_12201_database.zip
+    - LINUX.X64_193000_db_home.zip
 
 ml-soa12213n1:
   public_ip:        '192.168.56.30'
@@ -110,4 +110,4 @@ pe-rcudb:
   cpucount:         2
   type:             pe-agent
   software_files:
-    - linuxx64_12201_database.zip
+    - LINUX.X64_193000_db_home.zip
