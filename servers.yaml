@@ -3,66 +3,56 @@
 # The default settings for all nodes
 #
 defaults:
-  domain_name:     example.com
+  domain_name:      example.com
+  ip_start_address: 192.168.56.50
+  prefix:           soa
   cpucount:         1
-  box:              enterprisemodules/ol-7.7-x86_64-nocm
-  virtualboxorafix: enable
-#
-# The default settings for all ML nodes
-#
-ml-defaults:
-  type:             masterless
-#
-# The default settings for all PE nodes
-#
-pe-defaults:
-  type:             pe-agent
-  puppet_master:    wlsmaster
+  #
+  # Chose one of the boxes you like
+  #
+  # box:              enterprisemodules/ol-8.1-x86_64-nocm    # OracleLinux 8.1
+  # box:              enterprisemodules/ol-9.0-x86_64-nocm    # Oracle Linux 9.0
+  # box:              enterprisemodules/al-9.0-x86_64-nocm    # AlmaLinux 9.0
+  # box:              enterprisemodules/rl-9.0-x86_64-nocm    # RockyLinux 9.0
+  box:                enterprisemodules/ol-7.7-x86_64-nocm
 
 #
 # The settings for the Puppet Enterprise Server
-#  
-pe-wlsmaster:
-  public_ip:       '192.168.56.10'
-  cpucount:         2
-  ram:              3072
-  type:             pe-master
-  puppet_installer: puppet-enterprise-2019.1.0-el-7-x86_64/puppet-enterprise-installer
+#
+pe-puppetserver:
+  puppet_installer: puppet-enterprise-2019.5.0-el-8-x86_64/puppet-enterprise-installer
+
+#
  
 #
 # All masterless nodes
 #
-ml-rcudb:
-  public_ip:        '192.168.56.20'
+rcudb:
   software_files:
     - LINUX.X64_193000_db_home.zip
 
-ml-soa12213n1:
-  public_ip:        '192.168.56.30'
+soa12213n1:
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
     - fmw_12.2.1.3.0_soa.jar.zip
     - jce_policy-8.zip
 
-ml-soa12213n2:
-  public_ip:        '192.168.56.31'
+soa12213n2:
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
     - fmw_12.2.1.3.0_soa.jar.zip
     - jce_policy-8.zip
 
-ml-soa12214n1:
-  public_ip:        '192.168.56.32'
+soa12214n1:
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
     - fmw_12.2.1.4.0_soa.jar.zip
     - jce_policy-8.zip
 
-ml-soa12214n2:
-  public_ip:        '192.168.56.33'
+soa12214n2:
   software_files:
     - jdk-8u231-linux-x64.tar.gz
     - fmw_12.2.1.4.0_infrastructure.jar
@@ -73,7 +63,6 @@ ml-soa12214n2:
 # All PE nodes
 #
 pe-soa12213n1:
-  public_ip:        '192.168.56.30'
   cpucount:         2
   software_files:
     - jdk-8u161-linux-x64.tar.gz
@@ -81,33 +70,10 @@ pe-soa12213n1:
     - fmw_12.2.1.3.0_soa.jar.zip
     - jce_policy-8.zip
 
-ml-soa12213n2:
-  public_ip:        '192.168.56.31'
+soa12213n2:
   software_files:
     - jdk-8u161-linux-x64.tar.gz
     - fmw_12.2.1.3.0_infrastructure.jar
     - fmw_12.2.1.3.0_soa.jar.zip
     - jce_policy-8.zip
 
-pe-soa12214n1:
-  public_ip:        '192.168.56.32'
-  software_files:
-    - jdk-8u231-linux-x64.tar.gz
-    - fmw_12.2.1.4.0_infrastructure.jar
-    - fmw_12.2.1.4.0_soa.jar.zip
-    - jce_policy-8.zip
-
-pe-soa12214n2:
-  public_ip:        '192.168.56.33'
-  software_files:
-    - jdk-8u231-linux-x64.tar.gz
-    - fmw_12.2.1.4.0_infrastructure.jar
-    - fmw_12.2.1.4.0_soa.jar.zip
-    - jce_policy-8.zip
-
-pe-rcudb:
-  public_ip:        '192.168.56.20'
-  cpucount:         2
-  type:             pe-agent
-  software_files:
-    - LINUX.X64_193000_db_home.zip

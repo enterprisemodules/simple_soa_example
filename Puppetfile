@@ -8,8 +8,8 @@ mod 'enterprisemodules-wls_install'
 mod 'ipcrm-echo'
 mod 'puppetlabs-stdlib'
 mod 'puppet-augeasproviders_core'
-mod 'herculesteam-augeasproviders_sysctl'
-mod 'herculesteam-augeasproviders_grub'
+mod 'puppet-augeasproviders_sysctl'
+mod 'puppet-augeasproviders_grub'
 mod 'saz-limits'
 mod 'java',
   :git => 'https://github.com/enterprisemodules/puppetlabs-java.git',

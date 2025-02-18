@@ -6,13 +6,20 @@ include:
   - project: 'enterprisemodules/gitlab_ci'
     file: 'gitlab-ci.yml'
 
+cache:
+  key: "${CI_COMMIT_REF_SLUG}-vagrant"
+  paths:
+    - .vagrant/
+  policy: pull-push
+  when: always
+
+  
 setup RCU:
   stage: acceptance setup
   tags:
     - demo_check
   before_script:
-    - mkdir -p modules/software/files
-    - cp ~/software/LINUX.X64_193000_db_home.zip modules/software/files
+    - vagrant prepare ml-rcudb
   script:
   - vagrant up ml-rcudb
   only:
@@ -21,12 +28,8 @@ setup RCU:
 
 soa_12213_demo_check:
   extends: .demo_check
-  before_script:
-    - mkdir -p modules/software/files
-    - cp ~/software/jdk-8u161-linux-x64.tar.gz modules/software/files
-    - cp ~/software/fmw_12.2.1.3.0_infrastructure.jar modules/software/files
-    - cp ~/software/fmw_12.2.1.3.0_soa.jar.zip modules/software/files
-    - cp ~/software/jce_policy-8.zip modules/software/files
+  variables:
+    server: ml-soa12213n1
   script:
     - vagrant up ml-soa12213n1
     - vagrant up ml-soa12213n2
@@ -35,12 +38,8 @@ soa_12213_demo_check:
 
 soa_12214_demo_check:
   extends: .demo_check
-  before_script:
-    - mkdir -p modules/software/files
-    - cp ~/software/jdk-8u231-linux-x64.tar.gz modules/software/files
-    - cp ~/software/fmw_12.2.1.4.0_infrastructure.jar modules/software/files
-    - cp ~/software/fmw_12.2.1.4.0_soa.jar.zip modules/software/files
-    - cp ~/software/jce_policy-8.zip modules/software/files
+  variables:
+    server: ml-soa12214n1
   script:
     - vagrant up ml-soa12214n1
     - vagrant up ml-soa12214n2
@@ -52,8 +51,7 @@ teardown RCU:
   tags:
     - demo_check
   script:
-  - vboxmanage controlvm  ml-rcudb poweroff
-  - vboxmanage unregistervm ml-rcudb --delete
+    - vagrant destroy ml-rcudb --force
   only:
     refs:
       - master
