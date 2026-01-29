@@ -1,4 +1,4 @@
-class profile(
+class profile (
   $download_dir,
   $source_dir,
-){}
+) {}

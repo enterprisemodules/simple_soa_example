@@ -1,9 +1,9 @@
 ---
 role: role::soa::node
 
-wls_profile::weblogic_version:                                    12213
-wls_profile::weblogic::wls_software::file_name:                   fmw_12.2.1.3.0_infrastructure.jar
-wls_profile::weblogic::fmw_software::file_name:   
+wls_profile::weblogic_version:                                     12213
+wls_profile::weblogic::wls_software::file_name:                    fmw_12.2.1.3.0_infrastructure.jar
+wls_profile::weblogic::fmw_software::file_name:
   - fmw_12.2.1.3.0_soa.jar.zip
 
 wls_profile::java_version:                                         8u161

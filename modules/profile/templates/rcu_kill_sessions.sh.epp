@@ -1,0 +1,8 @@
+<% |
+  String[1] $schema_prefix,
+| %>
+#!/bin/bash
+export DISPLAY=nothing:0
+export SSH_ASKPASS=/var/install/askpass.sh
+export SSH_ASKPASS_REQUIRE=force
+setsid ssh -o StrictHostKeyChecking=no root@rcudb.example.com "su - oracle -c \"export ORACLE_SID=RCUDB; export ORAENV_ASK=NO; . oraenv; sqlplus / as sysdba @/srv/rcu_kill_sessions.sql <%= $schema_prefix -%>\""

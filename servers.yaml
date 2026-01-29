@@ -23,7 +23,6 @@ pe-puppetserver:
   puppet_installer: puppet-enterprise-2019.5.0-el-8-x86_64/puppet-enterprise-installer
 
 #
- 
 #
 # All masterless nodes
 #
@@ -69,11 +68,3 @@ pe-soa12213n1:
     - fmw_12.2.1.3.0_infrastructure.jar
     - fmw_12.2.1.3.0_soa.jar.zip
     - jce_policy-8.zip
-
-soa12213n2:
-  software_files:
-    - jdk-8u161-linux-x64.tar.gz
-    - fmw_12.2.1.3.0_infrastructure.jar
-    - fmw_12.2.1.3.0_soa.jar.zip
-    - jce_policy-8.zip
-
