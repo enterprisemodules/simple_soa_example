@@ -28,8 +28,11 @@ modules/timezone
 /modules/augeasproviders
 /modules/augeasproviders_core
 /modules/augeasproviders_sysctl
+/modules/augeasproviders_grub
 /modules/wls_profile
 /modules/echo
 /modules/firewalld
 /modules/ora_profile
 /modules/java
+/modules/systemd
+/modules/swap_file
